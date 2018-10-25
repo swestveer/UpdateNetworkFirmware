@@ -4,5 +4,10 @@
 /*
  * Put header things here
  */
+#include "FreeRTOS.h"
+#include "task.h"
+
+uint8_t rip_init(TaskHandle_t *);
+void rip_start_firmware(void *);
 
 #endif
