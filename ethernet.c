@@ -1,3 +1,10 @@
+/*
+ *  I ripped this code from the Wisconsin Robotics driver library repo. I've
+ *  included it here so we don't have to pull in some other dependencies that
+ *  we don't need to test the firmware update tool.
+ *
+ *  - Alex Wranovsky
+ */
 #include <stdbool.h>
 #include <stdint.h>
 #include <stddef.h>

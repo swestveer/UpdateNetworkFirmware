@@ -4,5 +4,5 @@
 /*
  * Put header things here
  */
-
+void create_bootloader_test_task(void);
 #endif

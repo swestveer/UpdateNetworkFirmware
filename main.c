@@ -17,6 +17,8 @@
 #include "FreeRTOS_IP.h"
 #include "FreeRTOS_IP_Private.h"
 
+#include "network_firmware_update.h"
+
 
 // FreeRTOS system interrupt handlers
 extern void vPortSVCHandler(void);
@@ -64,6 +66,8 @@ int main(){
             DNS_Address,
             Mac_Address);
     }
+
+    create_bootloader_test_task();
 
     // startup FreeRTOS, this function will never return on a system that's operating correctly
     vTaskStartScheduler();

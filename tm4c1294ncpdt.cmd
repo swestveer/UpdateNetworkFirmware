@@ -8,10 +8,13 @@
 
 --retain=g_pfnVectors
 
+#define APP_BASE        0x00004000
+#define RAM_BASE        0x20000000
+
 MEMORY
 {
-    FLASH (RX) : origin = 0x00000000, length = 0x00100000
-    SRAM (RWX) : origin = 0x20000000, length = 0x00040000
+    FLASH (RX) : origin = APP_BASE, length = 0x000fc000
+    SRAM (RWX) : origin = RAM_BASE, length = 0x00040000
 }
 
 /* The following command line options are set as part of the CCS project.    */
@@ -28,14 +31,14 @@ MEMORY
 
 SECTIONS
 {
-    .intvecs:   > 0x00000000
+    .intvecs:   > APP_BASE
     .text   :   > FLASH
     .const  :   > FLASH
     .cinit  :   > FLASH
     .pinit  :   > FLASH
     .init_array : > FLASH
 
-    .vtable :   > 0x20000000
+    .vtable :   > RAM_BASE
     .data   :   > SRAM
     .bss    :   > SRAM
     .sysmem :   > SRAM
