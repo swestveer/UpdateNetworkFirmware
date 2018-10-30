@@ -4,8 +4,16 @@
 /*
  * Put header things here
  */
+#include <stdint.h>
+#include <stdio.h>
+
 #include "FreeRTOS.h"
 #include "task.h"
+#include "semphr.h"
+
+#include "FreeRTOS_IP.h"
+#include "FreeRTOS_Sockets.h"
+
 
 uint8_t rip_init(TaskHandle_t *);
 void rip_start_firmware(void *);
