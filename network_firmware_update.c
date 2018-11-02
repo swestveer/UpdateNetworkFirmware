@@ -22,7 +22,7 @@
 
 #define tcpechoSHUTDOWN_DELAY   ( pdMS_TO_TICKS( 5000 ) )
 
-void echo (Socket_t);
+void echoTask (void *);
 
 /*
  * Gets the function pointer stored at address 0x2c in flash, and then executes it
@@ -72,9 +72,9 @@ static void bootloader_test_task(void *args) {
     }
 }
 
-uint8_t rip_init(TaskHandle_t *task_handle) {
+uint8_t rip_init(TaskHandle_t *task_handle, uint8_t priority) {
     BaseType_t create_return = NULL;
-    create_return = xTaskCreate(rip_start_firmware, "RIP", configMINIMAL_STACK_SIZE, NULL, 5, task_handle);
+    create_return = xTaskCreate(rip_start_firmware, "RIP", configMINIMAL_STACK_SIZE, (void *) priority, priority, task_handle);
     if(create_return ==  pdPASS) {
         return 0;
     }
@@ -82,6 +82,7 @@ uint8_t rip_init(TaskHandle_t *task_handle) {
 }
 
 void rip_start_firmware(void *args) {
+    uint8_t priority = (uint8_t) args;
     struct freertos_sockaddr bindAddr;
     Socket_t connectedSocket;
     static const TickType_t receiveTimeOut = portMAX_DELAY;
@@ -91,7 +92,7 @@ void rip_start_firmware(void *args) {
 
     FreeRTOS_setsockopt(listeningSocket, 0, FREERTOS_SO_RCVTIMEO, &receiveTimeOut, sizeof(receiveTimeOut));
 
-    bindAddr.sin_port = (uint16_t) 8000;
+    bindAddr.sin_port = (uint16_t) 12579;
     bindAddr.sin_port = FreeRTOS_htons(bindAddr.sin_port);
 
     FreeRTOS_bind (listeningSocket, &bindAddr, sizeof(bindAddr));
@@ -103,13 +104,12 @@ void rip_start_firmware(void *args) {
         connectedSocket = FreeRTOS_accept(listeningSocket, &client, &clientSize);
         configASSERT(connectedSocket != FREERTOS_INVALID_SOCKET);
         // Work on the socket!
-        if (connectedSocket) {
-            echo(connectedSocket);
-        }
+        xTaskCreate(echoTask, "EchoTask", configMINIMAL_STACK_SIZE, (void *) connectedSocket, priority, NULL);
     }
 }
 
-void echo (Socket_t socket) {
+void echoTask (void *args) {
+    Socket_t socket = (Socket_t) args;
     int32_t lBytes, lSent, lTotalSent;
     static const TickType_t receiveTimeOut = pdMS_TO_TICKS( 5000 );
     static const TickType_t sendTimeOut = pdMS_TO_TICKS( 5000 );
@@ -148,12 +148,13 @@ void echo (Socket_t socket) {
     FreeRTOS_shutdown(socket, FREERTOS_SHUT_RDWR);
     timeOnShutdown = xTaskGetTickCount();
     do {
-        if(FreeRTOS_recv( socket, buf, ipconfigTCP_MSS, 0) < 0) {
+        if(FreeRTOS_recv(socket, buf, ipconfigTCP_MSS, 0) < 0) {
             break;
         }
     }while (xTaskGetTickCount() - timeOnShutdown < tcpechoSHUTDOWN_DELAY);
 
     vPortFree(buf);
     FreeRTOS_closesocket(socket);
+    vTaskDelete(NULL);
 }
 
