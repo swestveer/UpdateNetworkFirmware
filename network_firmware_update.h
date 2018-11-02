@@ -15,7 +15,7 @@
 #include "FreeRTOS_Sockets.h"
 
 
-uint8_t rip_init(TaskHandle_t *);
+uint8_t rip_init(TaskHandle_t *, uint8_t);
 void rip_start_firmware(void *);
 
 #endif

@@ -68,7 +68,7 @@ int main() {
     //////// End Section ////////
 
     TaskHandle_t rip_task;
-    uint8_t res = rip_init(&rip_task);
+    uint8_t res = rip_init(&rip_task, 4);
 
     TaskHandle_t test_task;
     xTaskCreate(example_freertos_task, "test_task", configMINIMAL_STACK_SIZE, NULL, 2, &test_task);
