@@ -3,7 +3,8 @@ TM4C123GH6PM/
 TM4C1294NCPDT/
 Debug/
 .launches/
-
+**/.metadata/
+**/RemoteSystemsTempFiles/
 # Prerequisites
 *.d
 
