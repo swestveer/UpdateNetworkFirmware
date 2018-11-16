@@ -1,5 +1,7 @@
-#include "network_firmware_update.h"
+#include <stdbool.h>
+#include <stdint.h>
 
+#include "network_firmware_update.h"
 
 #include "inc/hw_types.h"
 #include "inc/hw_memmap.h"
@@ -40,45 +42,22 @@ void create_bootloader_test_task(void) {
     );
 }
 
-uint8_t rip_init(TaskHandle_t *task_handle, uint8_t priority) {
-    BaseType_t create_return = NULL;
-    create_return = xTaskCreate(rip_start_firmware, "RIP", configMINIMAL_STACK_SIZE, (void *) priority, priority, task_handle);
-    if(create_return ==  pdPASS) {
-        return 0;
-    }
-    return 1;
-}
-
-void rip_start_firmware(void *args) {
-    uint8_t priority = (uint8_t) args;
-    struct freertos_sockaddr bindAddr;
-    Socket_t connectedSocket;
-
-    // Do not set a breakpoint here, breaks TCP
-    Socket_t listeningSocket = FreeRTOS_socket (FREERTOS_AF_INET, FREERTOS_SOCK_STREAM, FREERTOS_IPPROTO_TCP);
-    configASSERT(listeningSocket != FREERTOS_INVALID_SOCKET);
-
-    // FreeRTOS_setsockopt(listeningSocket, 0, FREERTOS_SO_RCVTIMEO, &receiveTimeOut, sizeof(receiveTimeOut));
-
-    bindAddr.sin_port = (uint16_t) 12579;
-    bindAddr.sin_port = FreeRTOS_htons(bindAddr.sin_port);
-
-    FreeRTOS_bind (listeningSocket, &bindAddr, sizeof(bindAddr));
-    FreeRTOS_listen(listeningSocket, 1);
-
-    struct freertos_sockaddr client;
-    socklen_t clientSize = sizeof(client);
-    while(1) {
-        connectedSocket = FreeRTOS_accept(listeningSocket, &client, &clientSize);
-        configASSERT(connectedSocket != FREERTOS_INVALID_SOCKET);
-        // Work on the socket!
-        if (NULL != connectedSocket) {
-            xTaskCreate(echoTask, "EchoTask", configMINIMAL_STACK_SIZE, (void *) connectedSocket, priority, NULL);
+static void bootloader_test_task(void *args) {
+    while (1) {
+        // if button 0 is pressed, turn on the LED
+        if ((GPIOPinRead(GPIO_PORTJ_BASE, GPIO_PIN_0) & GPIO_PIN_0) != 0x0) {
+            GPIOPinWrite(GPIO_PORTN_BASE, GPIO_PIN_0, 0);
+        } else {
+            GPIOPinWrite(GPIO_PORTN_BASE, GPIO_PIN_0, GPIO_PIN_0);
         }
-    }
 
-    // This should never be reached!
-    vTaskDelete(NULL);
+        // if button 1 is pressed, enter the bootloader
+        if (!(GPIOPinRead(GPIO_PORTJ_BASE, GPIO_PIN_1) & GPIO_PIN_1)) {
+            call_bootloader();
+        }
+
+        vTaskDelay(1);
+    }
 }
 
 void echoTask (void *args) {
