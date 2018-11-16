@@ -8,13 +8,20 @@
 
 --retain=g_pfnVectors
 
-#define APP_BASE        0x00004000
-#define RAM_BASE        0x20000000
+#define FLASH_BASE          0x00000000
+#define FLASH_LENGTH        0x00100000
+#define SRAM_BASE           0x20000000
+#define SRAM_LENGTH         0x00040000
+
+#define APP_SRAM_OFFSET     0x1400
+#define APP_FLASH_OFFSET    0x4000
 
 MEMORY
 {
-    FLASH (RX) : origin = APP_BASE, length = 0x000fc000
-    SRAM (RWX) : origin = RAM_BASE, length = 0x00040000
+    BOOT_FLASH (RX)  : origin = FLASH_BASE,                     length = APP_FLASH_OFFSET
+    APP_FLASH  (RX)  : origin = FLASH_BASE+APP_FLASH_OFFSET,    length = FLASH_LENGTH-APP_FLASH_OFFSET
+    BOOT_SRAM  (RWX) : origin = SRAM_BASE,                      length = APP_SRAM_OFFSET
+    APP_SRAM   (RWX) : origin = SRAM_BASE+APP_SRAM_OFFSET,      length = SRAM_LENGTH-APP_SRAM_OFFSET
 }
 
 /* The following command line options are set as part of the CCS project.    */
@@ -31,18 +38,22 @@ MEMORY
 
 SECTIONS
 {
-    .intvecs:   > APP_BASE
-    .text   :   > FLASH
-    .const  :   > FLASH
-    .cinit  :   > FLASH
-    .pinit  :   > FLASH
-    .init_array : > FLASH
+    .intvecs:   > APP_FLASH_OFFSET /* ensure the interrupt vectors are located at the beginning */
+    .text   :   > APP_FLASH
+    .const  :   > APP_FLASH
+    .cinit  :   > APP_FLASH
+    .pinit  :   > APP_FLASH
+    .init_array : > APP_FLASH
 
-    .vtable :   > RAM_BASE
-    .data   :   > SRAM
-    .bss    :   > SRAM
-    .sysmem :   > SRAM
-    .stack  :   > SRAM
+    .vtable :   > APP_SRAM
+    .data   :   > APP_SRAM
+    .bss    :   > APP_SRAM
+    .sysmem :   > APP_SRAM
+    .stack  :   > APP_SRAM
 }
+
+/* These are used for passing a buffer to the bootloader */
+bl_buffer_ptr =  SRAM_BASE + APP_SRAM_OFFSET - 8;
+bl_buffer_size = SRAM_BASE + APP_SRAM_OFFSET - 4;
 
 __STACK_TOP = __stack + 512;
