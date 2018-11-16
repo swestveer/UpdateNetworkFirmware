@@ -71,18 +71,8 @@ int main() {
     TaskHandle_t rip_task;
     uint8_t res = rip_init(&rip_task, 4);
 
-    TaskHandle_t test_task;
-    xTaskCreate(example_freertos_task, "test_task", configMINIMAL_STACK_SIZE, NULL, 2, &test_task);
-
     // startup FreeRTOS, this function will never return on a system that's operating correctly
     vTaskStartScheduler();
 
     return 0;
-}
-
-static void example_freertos_task(void *params) {
-    // A FreeRTOS task should never return. If a task needs to be killed, use vTaskDelete().
-    while(1) {
-
-    }
 }
