@@ -19,16 +19,15 @@
 #include "FreeRTOS_Sockets.h"
 
 
-/*
- * Gets the function pointer stored at address 0x2c in flash, and then executes it
- */
-#define CALL_BOOTLOADER() (*((void (*)(void))(*(uint32_t *)0x2c)))()
-
 #define tcpechoSHUTDOWN_DELAY   ( pdMS_TO_TICKS( 5000 ) )
 
 void echo (Socket_t);
 static void bootloader_test_task(void *args);
 void echoTask (void *);
+
+extern void call_bootloader(void);
+extern uint8_t *bl_buffer_ptr;
+extern uint32_t bl_buffer_size;
 
 void create_bootloader_test_task(void) {
     xTaskCreate(

@@ -36,6 +36,14 @@ static void IntDefaultHandler(void);
 
 //*****************************************************************************
 //
+// Declarations for bootloader global variables
+//
+//*****************************************************************************
+extern uint8_t *bl_buffer_ptr;
+extern uint32_t bl_buffer_size;
+
+//*****************************************************************************
+//
 // External declaration for the reset handler that is to be called when the
 // processor is started
 //

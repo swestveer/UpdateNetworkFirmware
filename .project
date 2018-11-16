@@ -4,6 +4,7 @@
 	<comment></comment>
 	<projects>
 		<project>BadgerFreeRTOS</project>
+		<project>Bootloader</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
