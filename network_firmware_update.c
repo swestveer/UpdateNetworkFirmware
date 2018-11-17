@@ -29,7 +29,7 @@ void echoTask (void *);
 
 extern void call_bootloader(void);
 extern uint8_t *bl_buffer_ptr;
-extern uint32_t bl_buffer_size;
+extern int32_t bl_buffer_size;
 
 void create_bootloader_test_task(void) {
     xTaskCreate(
@@ -42,6 +42,10 @@ void create_bootloader_test_task(void) {
     );
 }
 
+/*
+ * The buttons on the board can be used to trap into the bootloader, regardless
+ * if there's been an image downloaded or not.
+ */
 static void bootloader_test_task(void *args) {
     while (1) {
         // if button 0 is pressed, turn on the LED
@@ -118,6 +122,13 @@ void echoTask (void *args) {
                 break;
             }
         }
+
+        // Trap into the bootloader. call_bootloader() should never return.
+        bl_buffer_ptr = image;
+        bl_buffer_size = imageSize;
+        call_bootloader();
+
+        // leave stuff below here for the time being
         vPortFree(image);
         image = NULL;
     }

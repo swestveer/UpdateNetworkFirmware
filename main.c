@@ -90,8 +90,6 @@ int main() {
     TaskHandle_t rip_task;
     uint8_t res = rip_init(&rip_task);
 
-    create_bootloader_test_task();
-
     // startup FreeRTOS, this function will never return on a system that's operating correctly
     vTaskStartScheduler();
 
