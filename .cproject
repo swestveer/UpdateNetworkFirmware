@@ -17,9 +17,9 @@
 				</extensions>
 			</storageModule>
 			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
-				<configuration artifactExtension="out" artifactName="${ProjName}" buildProperties="" cleanCommand="${CG_CLEAN_CMD}" description="" id="com.ti.ccstudio.buildDefinitions.TMS470.Debug.1860633793" name="Debug" parent="com.ti.ccstudio.buildDefinitions.TMS470.Debug">
+				<configuration artifactExtension="out" artifactName="${ProjName}" buildProperties="" cleanCommand="${CG_CLEAN_CMD}" description="" id="com.ti.ccstudio.buildDefinitions.TMS470.Debug.1860633793" name="Debug" parent="com.ti.ccstudio.buildDefinitions.TMS470.Debug" postannouncebuildStep="&quot;${CCS_INSTALL_ROOT}/utils/tiobj2bin/tiobj2bin&quot; &quot;${BuildArtifactFileName}&quot; &quot;${BuildArtifactFileBaseName}.bin&quot; &quot;${CG_TOOL_ROOT}/bin/armofd&quot; &quot;${CG_TOOL_ROOT}/bin/armhex&quot; &quot;${CCS_INSTALL_ROOT}/utils/tiobj2bin/mkhex4bin&quot;" postbuildStep="&quot;${CCS_INSTALL_ROOT}/utils/tiobj2bin/tiobj2bin&quot; &quot;${BuildArtifactFileName}&quot; &quot;${BuildArtifactFileBaseName}.bin&quot; &quot;${CG_TOOL_ROOT}/bin/armofd&quot; &quot;${CG_TOOL_ROOT}/bin/armhex&quot; &quot;${CCS_INSTALL_ROOT}/utils/tiobj2bin/mkhex4bin&quot;" prebuildStep="">
 					<folderInfo id="com.ti.ccstudio.buildDefinitions.TMS470.Debug.1860633793." name="/" resourcePath="">
-						<toolChain id="com.ti.ccstudio.buildDefinitions.TMS470_16.9.exe.DebugToolchain.186888679" name="TI Build Tools" superClass="com.ti.ccstudio.buildDefinitions.TMS470_16.9.exe.DebugToolchain" targetTool="com.ti.ccstudio.buildDefinitions.TMS470_16.9.exe.linkerDebug.868806685">
+						<toolChain id="com.ti.ccstudio.buildDefinitions.TMS470_16.9.exe.DebugToolchain.186888679" name="TI Build Tools" secondaryOutputs="com.ti.ccstudio.buildDefinitions.TMS470_16.9.hex.outputType__BIN" superClass="com.ti.ccstudio.buildDefinitions.TMS470_16.9.exe.DebugToolchain" targetTool="com.ti.ccstudio.buildDefinitions.TMS470_16.9.exe.linkerDebug.868806685">
 							<option id="com.ti.ccstudio.buildDefinitions.core.OPT_TAGS.1863467182" superClass="com.ti.ccstudio.buildDefinitions.core.OPT_TAGS" valueType="stringList">
 								<listOptionValue builtIn="false" value="DEVICE_CONFIGURATION_ID=Cortex M.TM4C1294NCPDT"/>
 								<listOptionValue builtIn="false" value="DEVICE_ENDIANNESS=little"/>
@@ -89,7 +89,20 @@
 								<inputType id="com.ti.ccstudio.buildDefinitions.TMS470_16.9.exeLinker.inputType__CMD2_SRCS.2120172819" name="Linker Command Files" superClass="com.ti.ccstudio.buildDefinitions.TMS470_16.9.exeLinker.inputType__CMD2_SRCS"/>
 								<inputType id="com.ti.ccstudio.buildDefinitions.TMS470_16.9.exeLinker.inputType__GEN_CMDS.425115950" name="Generated Linker Command Files" superClass="com.ti.ccstudio.buildDefinitions.TMS470_16.9.exeLinker.inputType__GEN_CMDS"/>
 							</tool>
-							<tool id="com.ti.ccstudio.buildDefinitions.TMS470_16.9.hex.925939871" name="ARM Hex Utility" superClass="com.ti.ccstudio.buildDefinitions.TMS470_16.9.hex"/>
+							<tool id="com.ti.ccstudio.buildDefinitions.TMS470_16.9.hex.925939871" name="ARM Hex Utility" superClass="com.ti.ccstudio.buildDefinitions.TMS470_16.9.hex">
+								<option id="com.ti.ccstudio.buildDefinitions.TMS470_16.9.hex.TOOL_ENABLE.1756925272" name="Enable tool" superClass="com.ti.ccstudio.buildDefinitions.TMS470_16.9.hex.TOOL_ENABLE" value="true" valueType="boolean"/>
+								<option id="com.ti.ccstudio.buildDefinitions.TMS470_16.9.hex.IMAGE.611596076" name="Select image mode (--image, -image)" superClass="com.ti.ccstudio.buildDefinitions.TMS470_16.9.hex.IMAGE" value="false" valueType="boolean"/>
+								<option id="com.ti.ccstudio.buildDefinitions.TMS470_16.9.hex.BOOT.589498203" name="Select boot mode (--boot, -boot)" superClass="com.ti.ccstudio.buildDefinitions.TMS470_16.9.hex.BOOT" value="true" valueType="boolean"/>
+								<option id="com.ti.ccstudio.buildDefinitions.TMS470_16.9.hex.OUTPUT_FORMAT.1558411522" name="Output format" superClass="com.ti.ccstudio.buildDefinitions.TMS470_16.9.hex.OUTPUT_FORMAT" value="com.ti.ccstudio.buildDefinitions.TMS470_16.9.hex.OUTPUT_FORMAT._none" valueType="enumerated"/>
+								<option id="com.ti.ccstudio.buildDefinitions.TMS470_16.9.hex.LINKERFILL.1019190124" name="Include linker fill sections in images (--linkerfill, -linkerfill)" superClass="com.ti.ccstudio.buildDefinitions.TMS470_16.9.hex.LINKERFILL" value="false" valueType="boolean"/>
+								<option id="com.ti.ccstudio.buildDefinitions.TMS470_16.9.hex.BYTE.1069777485" name="Output as bytes rather than target addressing (--byte, -byte)" superClass="com.ti.ccstudio.buildDefinitions.TMS470_16.9.hex.BYTE" value="false" valueType="boolean"/>
+								<option id="com.ti.ccstudio.buildDefinitions.TMS470_16.9.hex.OTHER_FLAGS.671830124" name="Other flags" superClass="com.ti.ccstudio.buildDefinitions.TMS470_16.9.hex.OTHER_FLAGS" valueType="stringList">
+									<listOptionValue builtIn="false" value=""/>
+								</option>
+								<option id="com.ti.ccstudio.buildDefinitions.TMS470_16.9.hex.BOOTORG.321722349" name="Specify origin address or symbol of boot table ROM (--bootorg, -bootorg=addr)" superClass="com.ti.ccstudio.buildDefinitions.TMS470_16.9.hex.BOOTORG" value="0x4000" valueType="string"/>
+								<option id="com.ti.ccstudio.buildDefinitions.TMS470_16.9.hex.GPIO8.1662033075" name="Specify table source as the GPIO port, 8-bit mode (--gpio8, -gpio8)" superClass="com.ti.ccstudio.buildDefinitions.TMS470_16.9.hex.GPIO8" value="true" valueType="boolean"/>
+								<option id="com.ti.ccstudio.buildDefinitions.TMS470_16.9.hex.ENTRYPOINT.2057729519" name="Specify entrypoint address or symbol name (--entrypoint, -e=addr)" superClass="com.ti.ccstudio.buildDefinitions.TMS470_16.9.hex.ENTRYPOINT" value="0x4000" valueType="string"/>
+							</tool>
 						</toolChain>
 					</folderInfo>
 				</configuration>
